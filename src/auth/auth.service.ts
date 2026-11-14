@@ -8,12 +8,9 @@ import {
 import { PrismaService } from '../prisma/prisma.service.js';
 import { JwtService } from '@nestjs/jwt';
 import { CreateAuthDto } from './dto/create-auth.dto.js';
-// import { JwtService } from '@nestjs/jwt';
-// import * as bcrypt from 'bcrypt';
-// import { PrismaService } from '../prisma/prisma.service.js';
-// import { CreateAuthDto } from './dto/create-auth.dto.js';
-// import { LoginDto } from './dto/LoginDto.js';
-// import { UserRole } from '../common/Enums/index.js';
+import * as bcrypt from 'bcrypt';
+import { LoginDto } from './dto/LoginDto.js';
+import { UserRole } from '../common/Enums/index.js';
 
 @Injectable()
 export class AuthService {
