@@ -23,12 +23,24 @@ export class AuthController {
     return this.authService.register(body);
   }
 
-  // 5 attempts per minute against password guessing
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @Post('login')
   @HttpCode(HttpStatus.OK)
   login(@Body() body: LoginDto) {
     return this.authService.login(body);
+  }
+
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  refresh(@Body('refreshToken') refreshToken: string) {
+    return this.authService.refreshTokens(refreshToken);
+  }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@Body('refreshToken') refreshToken: string) {
+    return this.authService.logout(refreshToken);
   }
 
   @Get('profile')
