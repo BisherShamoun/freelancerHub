@@ -94,9 +94,7 @@ export class AuthService {
       },
     });
 
-    const [accessToken] = await Promise.all([
-      this.signAccessToken(user, sessionId),
-    ]);
+    const accessToken = await this.signAccessToken(user, sessionId);
 
     return {
       access_token: accessToken,
