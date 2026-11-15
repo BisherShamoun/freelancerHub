@@ -2,8 +2,7 @@ import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
 import { NotificationsProcessor } from './notifications.processor.js';
 import { QueuesService } from './queues.service.js';
-
-export const NOTIFICATIONS_QUEUE = 'notifications';
+import { NOTIFICATIONS_QUEUE } from './queues.constants.js';
 
 @Module({
   imports: [
