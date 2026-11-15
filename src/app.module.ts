@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { createObserveModule } from '@nestjs/observe';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
 import { BullModule } from '@nestjs/bullmq';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
@@ -13,7 +14,6 @@ import { CategoryModule } from './category/category.module.js';
 import { ProjectModule } from './project/project.module.js';
 import { DeliveryModule } from './delivery/delivery.module.js';
 import { ProposalModule } from './proposal/proposal.module.js';
-import { CacheModule } from './cache/cache.module.js';
 import { QueuesModule } from './queues/queues.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
@@ -21,7 +21,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    CacheModule,
+    CacheModule.register({ isGlobal: true, ttl: 10_000 }),
     BullModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
