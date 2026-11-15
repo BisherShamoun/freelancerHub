@@ -196,7 +196,7 @@ export class AuthService {
   private async createSessionAndTokens(user: {
     id: string;
     email: string;
-    role: UserRole;
+    role: string;
     name: string;
   }) {
     const sessionId = randomUUID();
@@ -218,7 +218,7 @@ export class AuthService {
     };
   }
 
-  private async signAccessToken(user: { id: string; email: string; role: UserRole }) {
+  private async signAccessToken(user: { id: string; email: string; role: string }) {
     return this.jwtService.signAsync({
       sub: user.id,
       email: user.email,
