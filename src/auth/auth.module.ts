@@ -16,12 +16,9 @@ import { JwtStrategy } from './jwt.strategy.js';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         const secret = configService.get<string>('JWT_SECRET');
-        if (!secret) {
-          throw new Error('JWT_SECRET is missing from .env');
-        }
-        // One token that lasts a week: the user stays logged in, and the
-        // strategy re-checks the account (ban) on every request.
-        const expiresIn = configService.get<string>('JWT_EXPIRES_IN') ?? '7d';
+        if (!secret) throw new Error('JWT_SECRET is missing from .env');
+
+        const expiresIn = configService.get<string>('JWT_ACCESS_EXPIRES_IN') ?? '15m';
         return {
           secret,
           signOptions: { expiresIn: expiresIn as StringValue },
