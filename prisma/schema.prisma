@@ -62,6 +62,7 @@ model Session {
   userId           String    @db.Uuid
   refreshTokenHash String
   expiresAt        DateTime
+  userAgent        String?
   revokedAt        DateTime?
   createdAt        DateTime  @default(now())
   user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
