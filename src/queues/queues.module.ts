@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
 import { NotificationsProcessor } from './notifications.processor.js';
 import { QueuesService } from './queues.service.js';
 import { NOTIFICATIONS_QUEUE } from './queues.constants.js';
 
+@Global()
 @Module({
   imports: [
     BullModule.registerQueue({
