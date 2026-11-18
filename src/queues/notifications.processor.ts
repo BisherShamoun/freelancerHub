@@ -18,7 +18,7 @@ export class NotificationsProcessor extends WorkerHost {
       return;
     }
 
-    // TODO: Integrate an email, push, or in-app notification provider here.
+    //  Integrate an email
     this.logger.log(
       `Processing notification for user ${job.data.userId}: ${job.data.message}`,
     );
