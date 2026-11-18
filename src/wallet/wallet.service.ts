@@ -65,7 +65,6 @@ export class WalletService {
     };
   }
 
-  // No real payment gateway in this version: the amount is simply added.
   async deposit(dto: DepositDto, currentUser: currentUserDto) {
     if (currentUser.role !== UserRole.CLIENT) {
       throw new ForbiddenException('Only clients can top up their wallet');
