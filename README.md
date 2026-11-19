@@ -1,118 +1,369 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# FreelancerHub
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A freelance marketplace backend built with **NestJS**, **Prisma ORM**, and **PostgreSQL**. The platform connects clients with freelancers, allowing clients to publish projects and receive proposals, while freelancers can submit proposals and deliver completed work.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+### Authentication & Users
+- User registration and login.
+- JWT-based authentication.
+- Refresh token rotation and session management.
+- Logout from the current session or other sessions.
+- Role-based access control.
+- User account management and banning.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Projects & Proposals
+- Browse available projects.
+- Create and manage projects as a client.
+- Submit proposals as a freelancer.
+- Accept or reject proposals.
+- Track project status.
 
-## Project setup
+### Freelancer Profiles
+- Create and update freelancer profiles.
+- Manage profile information.
+- Upload profile avatars.
 
-```bash
-$ npm install
+### Wallet & Transactions
+- Wallet balance management.
+- Deposit and transaction records.
+- Payment holding and payout workflow.
+- Commission handling.
+
+### Deliveries
+- Upload project deliveries.
+- View and download submitted files.
+- Client delivery approval workflow.
+
+### Background Jobs
+- BullMQ integration for background job processing.
+- Redis connection for queue management.
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| NestJS | Backend framework |
+| TypeScript | Programming language |
+| Prisma ORM | Database access |
+| PostgreSQL | Relational database |
+| Redis | Queue infrastructure |
+| BullMQ | Background job processing |
+| JWT | Authentication |
+| Multer | File uploads |
+
+---
+
+## System Roles
+
+The system supports three main roles:
+
+| Role | Description |
+|---|---|
+| ADMIN | Manages users, categories, and platform operations |
+| CLIENT | Publishes projects, reviews proposals, and approves deliveries |
+| FREELANCER | Creates a professional profile, submits proposals, and delivers work |
+
+Visitors can browse public content and register or log in.
+
+---
+
+# System Diagrams
+
+## 1. Use Case Diagram
+
+The following diagram illustrates the main interactions between system actors and FreelancerHub.
+
+```mermaid
+flowchart LR
+    Visitor([Visitor])
+    Client([Client])
+    Freelancer([Freelancer])
+    Admin([Admin])
+
+    subgraph FreelancerHub["FreelancerHub System"]
+        UC1([Browse Open Projects])
+        UC2([View Categories])
+        UC3([View Freelancer Profiles])
+        UC4([Register / Login])
+
+        UC5([Manage Account])
+        UC6([Refresh Session])
+        UC7([Logout])
+
+        UC8([Publish Project])
+        UC9([Manage Projects])
+        UC10([View Proposals])
+        UC11([Accept Proposal])
+        UC12([Manage Wallet])
+        UC13([View Transactions])
+        UC14([Approve Delivery])
+        UC15([Download Delivery])
+
+        UC16([Submit Proposal])
+        UC17([Manage Freelancer Profile])
+        UC18([Upload Delivery])
+        UC19([View Proposal Status])
+
+        UC20([Manage Users])
+        UC21([Ban / Unban Users])
+        UC22([Manage Categories])
+        UC23([Access Deliveries])
+    end
+
+    Visitor --> UC1
+    Visitor --> UC2
+    Visitor --> UC3
+    Visitor --> UC4
+
+    Client --> UC5
+    Client --> UC6
+    Client --> UC7
+    Client --> UC8
+    Client --> UC9
+    Client --> UC10
+    Client --> UC11
+    Client --> UC12
+    Client --> UC13
+    Client --> UC14
+    Client --> UC15
+
+    Freelancer --> UC5
+    Freelancer --> UC6
+    Freelancer --> UC7
+    Freelancer --> UC16
+    Freelancer --> UC17
+    Freelancer --> UC18
+    Freelancer --> UC19
+    Freelancer --> UC15
+
+    Admin --> UC5
+    Admin --> UC6
+    Admin --> UC7
+    Admin --> UC20
+    Admin --> UC21
+    Admin --> UC22
+    Admin --> UC23
 ```
 
-## Compile and run the project
+## 2. Entity Relationship Diagram (ERD)
 
-```bash
-# development
-$ npm run start
+The database consists of the following main entities and relationships.
 
-# watch mode
-$ npm run start:dev
+```mermaid
+erDiagram
+    User ||--o{ Session : has
+    User ||--o| FreelancerProfile : owns
+    User ||--o| Wallet : owns
+    User ||--o{ Project : creates
+    User ||--o{ Proposal : submits
 
-# production mode
-$ npm run start:prod
+    Category ||--o{ Project : classifies
+    Project ||--o{ Proposal : receives
+    Project ||--o| Delivery : has
+    Wallet ||--o{ WalletTransaction : records
+    Project o|--o{ WalletTransaction : relates_to
+
+    User {
+        String id PK
+        String name
+        String email UK
+        String password
+        Role role
+        Boolean isBanned
+    }
+
+    Session {
+        String id PK
+        String userId FK
+        String refreshTokenHash
+        DateTime expiresAt
+        DateTime revokedAt
+    }
+
+    FreelancerProfile {
+        String id PK
+        String userId FK
+        String bio
+        String skills
+        String avatar
+    }
+
+    Wallet {
+        String id PK
+        String userId FK
+        Decimal balance
+    }
+
+    WalletTransaction {
+        String id PK
+        String walletId FK
+        String projectId FK
+        TransactionType type
+        Decimal amount
+    }
+
+    Category {
+        String id PK
+        String name
+    }
+
+    Project {
+        String id PK
+        String clientId FK
+        String categoryId FK
+        String title
+        String description
+        Decimal budget
+        ProjectStatus status
+    }
+
+    Proposal {
+        String id PK
+        String projectId FK
+        String freelancerId FK
+        Decimal proposedPrice
+        ProposalStatus status
+    }
+
+    Delivery {
+        String id PK
+        String projectId FK
+        String fileUrl
+        String description
+    }
 ```
 
-## Run tests
+### Database Enums
 
-```bash
-# unit tests
-$ npm run test
+| Enum | Values |
+|---|---|
+| Role | ADMIN, CLIENT, FREELANCER |
+| ProjectStatus | OPEN, IN_PROGRESS, COMPLETED |
+| ProposalStatus | PENDING, ACCEPTED, REJECTED |
+| TransactionType | DEPOSIT, HOLD, PAYOUT, COMMISSION |
 
-# e2e tests
-$ npm run test:e2e
+---
 
-# test coverage
-$ npm run test:cov
+## Project Structure
+
+```text
+src/
+├── auth/
+├── users/
+├── category/
+├── project/
+├── proposal/
+├── freelancer-profile/
+├── wallet/
+├── delivery/
+├── prisma/
+├── common/
+└── main.ts
+
+prisma/
+└── schema.prisma
 ```
 
-## Deployment
+*The structure above highlights the main application modules.*
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Getting Started
+
+### Prerequisites
+
+Make sure you have installed:
+
+- Node.js
+- npm
+- PostgreSQL
+- Redis
+
+### Installation
+
+Clone the repository:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+git clone https://github.com/BisherShamoun/freelancerHub.git
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Navigate to the project directory:
 
-## Observability
+```bash
+cd freelancerHub
+```
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+Install dependencies:
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+```bash
+npm install
+```
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+### Environment Variables
 
-This project is already instrumented. Create a free account at [observe.nestjs.com](https://observe.nestjs.com), add an application, and paste the generated app key and secret into the `ObserveModule.forRoot()` call in `src/app.module.ts`.
+Create a `.env` file in the root directory and configure the required environment variables.
 
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
+Example:
 
-## Resources
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/freelancerhub"
 
-Check out a few resources that may come in handy when working with NestJS:
+REDIS_URL="redis://localhost:6379"
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+JWT_ACCESS_SECRET="your_access_secret"
+JWT_REFRESH_SECRET="your_refresh_secret"
+```
 
-## Support
+Use the project's `.env.example` as the reference for all required variables.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Database Setup
 
-## Stay in touch
+Generate the Prisma Client:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+npx prisma generate
+```
+
+Run database migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+### Run the Application
+
+Development mode:
+
+```bash
+npm run start:dev
+```
+
+Production mode:
+
+```bash
+npm run build
+npm run start:prod
+```
+
+---
+
+## API Base URL
+
+```text
+/api
+```
+
+---
+
+## Repository
+
+GitHub: [BisherShamoun/freelancerHub](https://github.com/BisherShamoun/freelancerHub)
+
+---
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is developed as part of a learning and practical backend development project.
